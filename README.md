@@ -14,7 +14,8 @@ I was only able to get this far by sacrificing the automatic scaling
 I got when I loaded the image into a JavaFX ImageView control.  I
 couldn't get it to read pixels from the resulting image object.
 So, instead I'm loading it into a BufferedImage object, which is
-in a completely different branch of Java, but I have it working.
+in a completely different branch of Java, but it's an object I got
+working well enough to load the font into memory with it.
 
 Future plans
 ------------

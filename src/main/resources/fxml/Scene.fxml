@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.canvas.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.image.*?>
+
+<AnchorPane xmlns:fx="http://javafx.com/fxml/1" id="AnchorPane" prefHeight="550" prefWidth="700" fx:controller="us.happynet.png2petscii.FXMLController">
+    <children>
+        <Button prefHeight="30" prefWidth="90" text="Open" onAction="#handleOpen" fx:id="open" AnchorPane.topAnchor="10" AnchorPane.leftAnchor="10"  />
+        <Button prefHeight="30" prefWidth="90" text="Retry" onAction="#handleRetry" fx:id="retry" AnchorPane.topAnchor="10" AnchorPane.leftAnchor="110"  />
+        <Button prefHeight="30" prefWidth="90" text="Save" onAction="#handleSave" fx:id="save" AnchorPane.topAnchor="10" AnchorPane.leftAnchor="210"  />
+        <Label text="Status" fx:id="label" AnchorPane.topAnchor="60" AnchorPane.leftAnchor="10" prefHeight="40" />  
+            <Label  text="Source" AnchorPane.leftAnchor="10" AnchorPane.bottomAnchor="410" />
+            <ImageView fx:id="srcImage" AnchorPane.leftAnchor="10" AnchorPane.bottomAnchor="10" onImageChange="#imageLoaded" />
+            <Label text="Destination" AnchorPane.rightAnchor="10" AnchorPane.bottomAnchor="410" />
+            <Canvas fx:id="dstCanvas" AnchorPane.rightAnchor="10" AnchorPane.bottomAnchor="10" height="208" width="320"   /> 
+    </children>
+</AnchorPane>

@@ -134,8 +134,6 @@ public class FXMLController implements Initializable {
             return;
         }
         outputScreen = font.convert(srcImage.getImage());
-        //outputScreen = font.convert(srcImage.getImage());
-        //outputScreen.drawTo(dstCanvas);
         BufferedImage bi = outputScreen.toBufferedImage();
         dstImage.setImage(SwingFXUtils.toFXImage(bi, null));
     }
@@ -149,7 +147,7 @@ public class FXMLController implements Initializable {
                 throw new FileNotFoundException(filename);
             }
             BufferedImage im = ImageIO.read(is);
-            return new PetsciiFont(im);
+            return new PetsciiColorFont(new PetsciiFont(im));
         }
     }
     

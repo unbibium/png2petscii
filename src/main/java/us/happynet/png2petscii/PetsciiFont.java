@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Supplier;
 import javafx.scene.image.Image;
 import javax.imageio.ImageIO;
 
@@ -20,7 +21,7 @@ import javax.imageio.ImageIO;
 public class PetsciiFont extends Font<PetsciiGlyph> {
 
     private final Raster[] charRasters = new Raster[256];
-    private final List<PetsciiGlyph> glyphs = new ArrayList<>(256);
+    protected final List<PetsciiGlyph> glyphs;
     private final BufferedImage[] images = new BufferedImage[256];
     
     public PetsciiFont(File f) throws IOException {
@@ -31,10 +32,15 @@ public class PetsciiFont extends Font<PetsciiGlyph> {
         this(ImageIO.read(f));
     }
     
+    protected PetsciiFont(PetsciiFont srcFont) {
+        this.glyphs = srcFont.glyphs;
+    }
+    
     public PetsciiFont(BufferedImage image) {
         if(image.getHeight() != 64 && image.getWidth() != 256) {
             throw new IllegalArgumentException("invalid image size");
         }
+        glyphs = new ArrayList<>(256);
         int characterIndex = 0;
         for (int j=0; j<8; j++) {
             for (int i = 0; i<32; i++) {

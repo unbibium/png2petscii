@@ -11,8 +11,6 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
-import javafx.scene.canvas.Canvas;
-import javafx.scene.canvas.GraphicsContext;
 
 /**
  *
@@ -54,7 +52,6 @@ public class PetsciiScreen extends Screen {
         for (List<PetsciiGlyph> row : contents) {
             int x = 0;
             for (PetsciiGlyph glyph : row) {
-                System.out.printf("%2X ", glyph.getScreenCode());
                 try {
                     bi.setRGB(x, y, 8, 8, glyph.getRGBArray(), 0, 8);
                 } catch (ArrayIndexOutOfBoundsException ex) {
@@ -65,13 +62,12 @@ public class PetsciiScreen extends Screen {
                     break;
                 }
             }
-            System.out.println();
             y += 8;
             if (y > h) {
                 break;
             }
         }
-        System.out.println("Finished drawing.");
+        System.out.println("Generated a buffered image.");
         return bi;
     }
 
@@ -92,13 +88,11 @@ public class PetsciiScreen extends Screen {
                 try {
                     BufferedImage tile = image.getSubimage(column, row, 8, 8);
                     PetsciiGlyph g = font.findClosest(tile);
-                    System.out.printf("%2x", g.getScreenCode());
                     type(g);
                 } catch (RasterFormatException rfe) {
                     // TODO: figure out what to do with partial tiles
                 }
             }
-            System.out.println();
             newline();
         }
     }

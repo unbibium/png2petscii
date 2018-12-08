@@ -6,16 +6,9 @@ import java.awt.image.Raster;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.Arrays;
-import java.util.Comparator;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-import java.util.function.Function;
-import java.util.stream.Stream;
 import javafx.scene.image.Image;
-import javafx.scene.image.PixelFormat;
-import javafx.scene.image.PixelReader;
-import javafx.util.Pair;
 import javax.imageio.ImageIO;
 
 /**
@@ -24,10 +17,10 @@ import javax.imageio.ImageIO;
  * 
  * @author nickb
  */
-public class PetsciiFont {
+public class PetsciiFont extends Font<PetsciiGlyph> {
 
     private final Raster[] charRasters = new Raster[256];
-    private final PetsciiGlyph[] glyphs = new PetsciiGlyph[256];
+    private final List<PetsciiGlyph> glyphs = new ArrayList<>(256);
     private final BufferedImage[] images = new BufferedImage[256];
     
     public PetsciiFont(File f) throws IOException {
@@ -46,11 +39,11 @@ public class PetsciiFont {
         for (int j=0; j<8; j++) {
             for (int i = 0; i<32; i++) {
                 Rectangle r = new Rectangle(i*8, j*8, 8, 8);
-                Raster raster = image.getData(r);
+                Raster raster = image.getData(r).createTranslatedChild(0, 0);
                 BufferedImage bi = image.getSubimage(i*8, j*8, 8, 8);
                 charRasters[characterIndex] = raster;
                 images[characterIndex] = bi;
-                glyphs[characterIndex] = new PetsciiGlyph(bi, characterIndex);
+                glyphs.add(new PetsciiGlyph(bi, characterIndex));
                 characterIndex++;
             }
         }  
@@ -65,33 +58,24 @@ public class PetsciiFont {
     }
     
     public PetsciiGlyph getGlyph(int i) {
-        return glyphs[i];
+        return glyphs.get(i);
     }
 
-    @Deprecated
-    PetsciiScreen convert(Image image) {
+    public PetsciiScreen convert(Image image) {
         PetsciiScreen result = new PetsciiScreen(this);
         result.convert(image);
         return result;
     }
     
-    PetsciiScreen convert(BufferedImage image) {
+    public PetsciiScreen convert(BufferedImage image) {
         PetsciiScreen result = new PetsciiScreen(this);
         result.convert(image);
         return result;
     }
-    
-    PetsciiGlyph findClosest(BufferedImage tile) {
-        PetsciiGlyph result = null;
-        double score = Double.POSITIVE_INFINITY;
-        for(PetsciiGlyph glyph : glyphs) {
-            double newscore = glyph.diff(tile);
-            if (newscore < score) {
-                score = newscore;
-                result = glyph;
-            }
-        }
-        return result;
+
+    @Override
+    public Iterable<PetsciiGlyph> getAvailableGlyphs() {
+        return glyphs;
     }
     
 }

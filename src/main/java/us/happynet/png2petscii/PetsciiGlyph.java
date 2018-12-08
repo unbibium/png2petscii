@@ -4,8 +4,6 @@ import java.awt.image.BufferedImage;
 import java.awt.image.WritableRaster;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.util.Arrays;
-import javafx.scene.image.Image;
 import javafx.scene.image.PixelWriter;
 import javafx.scene.image.WritableImage;
 
@@ -14,14 +12,14 @@ import javafx.scene.image.WritableImage;
  *
  * @author nickb
  */
-public class PetsciiGlyph {
+public class PetsciiGlyph extends Glyph {
 
     protected final boolean[][] bitmap = new boolean[8][8];
     protected final int screenCode;
     protected final WritableImage image = new WritableImage(8,8);
-    protected PetsciiColor background;
-    protected PetsciiColor foreground;
-    private int[] rgbArray = new int[64];
+    protected final PetsciiColor background;
+    protected final PetsciiColor foreground;
+    private final int[] rgbArray = new int[64];
     
     public PetsciiColor getBackgroundColor() {
         return background;
@@ -134,6 +132,7 @@ public class PetsciiGlyph {
      * @param imgB
      * @return difference of luma values between this glyph and imgB.
      */
+    @Override
     public double diff(BufferedImage imgB) {
         int fgBgDifference = 255 * 3;
         final WritableRaster alphaRaster = imgB.getAlphaRaster();

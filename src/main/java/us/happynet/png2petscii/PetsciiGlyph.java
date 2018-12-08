@@ -43,7 +43,7 @@ public class PetsciiGlyph {
     
     /**
      * build glyph from buffered sub-image
-     * @param glyphImage 
+     * @param glyphImage an 8x8 BufferedImage that can be read
      * @param screenCode 
      * @param foreground 
      * @param background 

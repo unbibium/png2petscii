@@ -15,16 +15,14 @@ import java.util.List;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
-import javafx.scene.image.PixelFormat;
 import javafx.scene.image.PixelReader;
-import javafx.scene.image.PixelWriter;
 import javafx.scene.image.WritablePixelFormat;
 
 /**
  *
  * @author nickb
  */
-class PetsciiScreen {
+public class PetsciiScreen extends Screen {
     private final List<List<PetsciiGlyph>> contents;
     private List<PetsciiGlyph> currentLine;
     private final PetsciiFont font;
@@ -74,10 +72,11 @@ class PetsciiScreen {
      * Attempts to draw the provided image to the screen in
      * whichever glyphs are closest.
      * <p>
-     * this works on a JavaFX image and I don't know if it works.
+     * this works on a {@link BufferedImage} and I think it works.
      * 
      * @param image An arbitrary image to convert
      */    
+    @Override
     public void convert(BufferedImage image) {
         final int width = image.getWidth();
         final int height = image.getHeight();
@@ -140,13 +139,14 @@ class PetsciiScreen {
      * @param os stream to which to write the PETSCII stream
      * @throws IOException if there is any problem
      */
-    void writePetscii(OutputStream os) throws IOException {
+    @Override
+    public void writeData(OutputStream os) throws IOException {
         for (List<PetsciiGlyph> row : contents) {
             for (PetsciiGlyph glyph : row) {
                 glyph.writePetscii(os);
             }
             // todo: have font output the CR so we can do ATASCII
-            os.write(0x0A);
+            os.write(0x0D);
         }
             
     }

@@ -2,40 +2,33 @@ package us.happynet.png2petscii;
 
 import java.awt.image.BufferedImage;
 import java.awt.image.WritableRaster;
+import java.io.IOException;
+import java.io.OutputStream;
 
 /**
- * Represents a PETSCII glyph that has been assigned a color.
+ * Represents a PETSCII glyph that may be a different color from others on
+ * screen.
+ * <p>
+ * The main difference is that {@link #diff(java.awt.image.BufferedImage) }
+ * compares color channels individually and not just luma.
  * 
  * @author nickb
  */
 public class PetsciiColorGlyph extends PetsciiGlyph {
 
-    private final PetsciiColor bgColor;
-    private final PetsciiColor fgColor;
     private final int fgBgDifference;
     
-    public PetsciiColorGlyph(byte[] data, int screenCode, PetsciiColor bgColor, PetsciiColor fgColor) {
-        super(data, screenCode);
-        this.bgColor = bgColor;
-        this.fgColor = fgColor;
-        fgBgDifference = bgColor.diff(fgColor);
+    public PetsciiColorGlyph(byte[] data, int screenCode, PetsciiColor foreground, PetsciiColor background) {
+        super(data, screenCode, foreground, background);
+        fgBgDifference = background.diff(foreground);
     }
     
-    public PetsciiColorGlyph(PetsciiGlyph aglyph, PetsciiColor bgColor, PetsciiColor fgColor) {
-        this(aglyph.toBytes(), aglyph.screenCode, bgColor, fgColor);
+    public PetsciiColorGlyph(PetsciiGlyph aglyph, PetsciiColor foreground, PetsciiColor background) {
+        this(aglyph.toBytes(), aglyph.screenCode, foreground, background);
     }
     
-    /**
-     * Converts an integer color into an array for overloading.
-     * @param rgbB
-     * @return
-     */
-    private static int[] intToArray(int rgbB) {
-        int[] array = new int[3];
-        array[0] = (rgbB >> 16) & 255;
-        array[1] = (rgbB >> 8) & 255;
-        array[2] = (rgbB) & 255;
-        return array;
+    public PetsciiColorGlyph(PetsciiGlyph aglyph, PetsciiColor foreground) {
+        this(aglyph.toBytes(), aglyph.screenCode, foreground, aglyph.getBackgroundColor());
     }
 
     @Override
@@ -50,7 +43,7 @@ public class PetsciiColorGlyph extends PetsciiGlyph {
                     }
                 } else {
                     int rgbB = otherImage.getRGB(x, y);
-                    PetsciiColor rgbA = bitmap(x,y) ? fgColor : bgColor;
+                    PetsciiColor rgbA = bitmap(x,y) ? foreground : background;
                     difference += rgbA.diff(rgbB);
                 }
             }
@@ -63,5 +56,18 @@ public class PetsciiColorGlyph extends PetsciiGlyph {
         double percentage = (avg_different_pixels / 255) * 100;
         return percentage;
     }
-    
+
+    /**
+     * Writes the PETSCII bytes to display this glyph to the
+     * specified output stream.  Will always write the color
+     * code, followed by RVS_ON or RVS_OFF byte, then the
+     * character itself.
+     * @param os Output stream to receive the bytes.
+     * @throws java.io.IOException if the write fails.
+     */    
+    @Override
+    public void writeData(OutputStream os) throws IOException {
+        os.write(foreground.getPetscii());
+        super.writeData(os);
+    }
 }

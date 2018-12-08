@@ -12,6 +12,7 @@ import java.net.URL;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.embed.swing.SwingFXUtils;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -35,6 +36,8 @@ public class FXMLController implements Initializable {
     private ImageView srcImage;
     @FXML
     private Canvas dstCanvas;
+    @FXML
+    private ImageView dstImage;
     
     // program state
     private File selectedFile;
@@ -132,7 +135,9 @@ public class FXMLController implements Initializable {
         }
         outputScreen = font.convert(srcImage.getImage());
         //outputScreen = font.convert(srcImage.getImage());
-        outputScreen.drawTo(dstCanvas);
+        //outputScreen.drawTo(dstCanvas);
+        BufferedImage bi = outputScreen.toBufferedImage();
+        dstImage.setImage(SwingFXUtils.toFXImage(bi, null));
     }
     
     private PetsciiFont getFont() throws IOException {

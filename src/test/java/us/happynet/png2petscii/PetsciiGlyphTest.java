@@ -84,7 +84,7 @@ public class PetsciiGlyphTest {
     public void writesPetsciiLetters() throws IOException {
         PetsciiGlyph atSignGlyph = new PetsciiGlyph(AT_SIGN_BYTES, 0);
         ByteArrayOutputStream os = new ByteArrayOutputStream();
-        atSignGlyph.writePetscii(os);
+        atSignGlyph.writeData(os);
         byte[] ba = os.toByteArray();
         assertEquals("byte array length", 2, ba.length);
         assertEquals("first character is RVS_OFF", ba[0], -110);

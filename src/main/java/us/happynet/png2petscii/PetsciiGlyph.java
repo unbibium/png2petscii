@@ -4,6 +4,7 @@ import java.awt.image.BufferedImage;
 import java.awt.image.WritableRaster;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.util.Arrays;
 import javafx.scene.image.Image;
 import javafx.scene.image.PixelWriter;
 import javafx.scene.image.WritableImage;
@@ -18,8 +19,9 @@ public class PetsciiGlyph {
     protected final boolean[][] bitmap = new boolean[8][8];
     protected final int screenCode;
     protected final WritableImage image = new WritableImage(8,8);
-    private PetsciiColor background;
-    private PetsciiColor foreground;
+    protected PetsciiColor background;
+    protected PetsciiColor foreground;
+    private int[] rgbArray = new int[64];
     
     public PetsciiColor getBackgroundColor() {
         return background;
@@ -53,14 +55,13 @@ public class PetsciiGlyph {
         if(glyphImage.getHeight() != 8 || glyphImage.getWidth() != 8) {
             throw new IllegalArgumentException("need 8x8, was " + glyphImage.getWidth() + "x" + glyphImage.getHeight());
         }
-        final PixelWriter pw = image.getPixelWriter();
         final int minx = glyphImage.getMinX();
         final int miny = glyphImage.getMinY();
         for (int y = 0; y<8; y++) { 
             for (int x = 0; x<8; x++) { 
                 boolean bit = (glyphImage.getRGB(minx+x,miny+y) & 0xFFFFFF) != 0;
                 bitmap[x][y] = bit;
-                pw.setArgb(x, y, (bit ? foreground:background).getRGB());
+                rgbArray[x+y*8]=(bit ? foreground:background).getRGB();
             } 
         }
         // needs to be stored as a JavaFX image
@@ -90,6 +91,7 @@ public class PetsciiGlyph {
                 boolean bit = (data[y] & (1<<x)) != 0;
                 bitmap[7-x][y] = bit;
                 pw.setArgb(7-x, y, (bit ? foreground:background).getRGB());
+                rgbArray[7-x+y*8]=(bit ? foreground:background).getRGB();
             }
         }
     }
@@ -128,6 +130,10 @@ public class PetsciiGlyph {
         return result;
     }
     
+    /**
+     * @param imgB
+     * @return difference of luma values between this glyph and imgB.
+     */
     public double diff(BufferedImage imgB) {
         int fgBgDifference = 255 * 3;
         final WritableRaster alphaRaster = imgB.getAlphaRaster();
@@ -168,7 +174,7 @@ public class PetsciiGlyph {
      * @param os Output stream to receive the bytes.
      * @throws java.io.IOException if the write fails.
      */
-    public void writePetscii(OutputStream os) throws IOException {
+    public void writeData(OutputStream os) throws IOException {
         os.write ( (screenCode > 128) ? RVS_ON : RVS_OFF );
         byte lowBits = (byte) (screenCode & 0x7F);
         switch(lowBits & 0x60) {
@@ -185,8 +191,8 @@ public class PetsciiGlyph {
         }
     }
 
-    Image getImage() {
-        return image;
+    public int[] getRGBArray() {
+        return rgbArray;
     }
     
 }

@@ -59,18 +59,7 @@ public class PetsciiFontTest {
     @After
     public void tearDown() {
     }
-
-    /**
-     * Test of getRaster method, of class PetsciiFont.
-     */
-    @Test
-    public void testGetRaster() {
-        assertNotNull(FONT.getRaster(0));
-        assertNotNull(FONT.getRaster(255));
-        Raster r = FONT.getRaster(0);
-        PetsciiGlyph g = FONT.getGlyph(0);
-    }
-
+    
     @Test    
     public void findClosestFindsSpace() {
         int[] blankSpace = new int[64];

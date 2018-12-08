@@ -20,7 +20,6 @@ import javax.imageio.ImageIO;
  */
 public class PetsciiFont extends Font<PetsciiGlyph> {
 
-    private final Raster[] charRasters = new Raster[256];
     protected final List<PetsciiGlyph> glyphs;
     private final BufferedImage[] images = new BufferedImage[256];
     
@@ -44,19 +43,12 @@ public class PetsciiFont extends Font<PetsciiGlyph> {
         int characterIndex = 0;
         for (int j=0; j<8; j++) {
             for (int i = 0; i<32; i++) {
-                Rectangle r = new Rectangle(i*8, j*8, 8, 8);
-                Raster raster = image.getData(r).createTranslatedChild(0, 0);
                 BufferedImage bi = image.getSubimage(i*8, j*8, 8, 8);
-                charRasters[characterIndex] = raster;
                 images[characterIndex] = bi;
                 glyphs.add(new PetsciiGlyph(bi, characterIndex));
                 characterIndex++;
             }
         }  
-    }
-    
-    public Raster getRaster(int i) {
-        return charRasters[i];
     }
     
     public BufferedImage getImage(int i) {

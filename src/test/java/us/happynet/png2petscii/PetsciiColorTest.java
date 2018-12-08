@@ -94,4 +94,20 @@ public class PetsciiColorTest {
             }
         }
     }
+    
+    @Test
+    public void quantizeBlackAndWhite() {
+        assertEquals(0x000000, PetsciiColor.quantize(0x000000));
+        assertEquals(0xFFFFFF, PetsciiColor.quantize(0xFFFFFF));
+    }
+    
+    @Test
+    public void quantizeOffBlackAndOffWhite() {
+        assertEquals(0x000000, PetsciiColor.quantize(0x000001));
+        assertEquals(0xFFFFFF, PetsciiColor.quantize(0xFFFFFE));
+        assertEquals(0x000000, PetsciiColor.quantize(0x000101));
+        assertEquals(0xFFFFFF, PetsciiColor.quantize(0xFFFEFE));
+        assertEquals(0x000000, PetsciiColor.quantize(0x010101));
+        assertEquals(0xFFFFFF, PetsciiColor.quantize(0xFEFEFE));
+    }
 }

@@ -88,6 +88,7 @@ public enum PetsciiColor {
      * 
      * @param otherRGB a 24-bit RGB color for comparison
      * @return the difference between the color level of the two colors.
+     * 0 for identical colors.
      */
     public int diff(int otherRGB) {
         int redB = (otherRGB >> 16) & 255;
@@ -96,6 +97,27 @@ public enum PetsciiColor {
         return Math.abs(this.getRed()-redB) +
                 Math.abs(this.getGreen()-greenB) +
                 Math.abs(this.getBlue()-blueB);
+    }
+    
+    /**
+     * Quantizes a pixel to the closest known C64 color.
+     * @param sourceRGB a 24-bit RGB color
+     * @return RGB value of the closest C64 palette entry
+     */
+    public static int quantize(int sourceRGB) {
+        int minDiff = 999;
+        int minColor = 0;
+        for (PetsciiColor c : PetsciiColor.values()) {
+            if(c.getRGB() == sourceRGB) {
+                return sourceRGB;
+            }
+            int cDiff = c.diff(sourceRGB);
+            if(minDiff > cDiff) {
+                minDiff = cDiff;
+                minColor = c.getRGB();
+            }
+        }
+        return minColor;
     }
 
 }

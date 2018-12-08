@@ -19,7 +19,6 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.image.PixelReader;
 import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
 import javafx.stage.Window;
@@ -131,7 +130,7 @@ public class FXMLController implements Initializable {
             label.setText(ex.getMessage());
             return;
         }
-        outputScreen = font.convert(src);
+        outputScreen = font.convert(srcImage.getImage());
         //outputScreen = font.convert(srcImage.getImage());
         outputScreen.drawTo(dstCanvas);
     }

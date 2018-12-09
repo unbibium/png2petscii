@@ -7,10 +7,12 @@ package us.happynet.png2petscii;
 
 import java.awt.image.BufferedImage;
 import java.awt.image.RasterFormatException;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
+import us.happynet.png2petscii.io.PetsciiOptimizingOutputStream;
 
 /**
  *
@@ -21,6 +23,10 @@ public class PetsciiScreen extends Screen {
     private final List<List<PetsciiGlyph>> contents;
     private List<PetsciiGlyph> currentLine;
     private final PetsciiFont font;
+
+    public PetsciiScreen() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
 
     public final void newline() {
         currentLine = new ArrayList<>();
@@ -98,22 +104,46 @@ public class PetsciiScreen extends Screen {
     }
 
     /**
+     * writes the bytes for each PETSCII character to the output stream, with
+     * a CR character after each line.
+     * 
+     * @param os stream to which to write the PETSCII stream
+     * @throws IOException if there is any problem
+     */
+    public void writeData(PetsciiOptimizingOutputStream os) throws IOException {
+        for (List<PetsciiGlyph> row : contents) {
+            for (PetsciiGlyph glyph : row) {
+                glyph.writeData(os);
+            }
+            // todo: have font output the CR so we can move this
+            // to the superclass instead and do ATASCII.
+            os.write(0x0D);
+        }
+    }
+
+    /**
      * writes the bytes for each PETSCII character to the output stream, with a
      * CR character after each line.
+     * 
+     * All outgoing data will be filtered through 
+     * {@link PetsciiOptimizingOutputStream}
+     * before being written to the output stream.
      *
      * @param os stream to which to write the PETSCII stream
      * @throws IOException if there is any problem
      */
     @Override
     public void writeData(OutputStream os) throws IOException {
-        for (List<PetsciiGlyph> row : contents) {
-            for (PetsciiGlyph glyph : row) {
-                glyph.writeData(os);
-            }
-            // todo: have font output the CR so we can do ATASCII
-            os.write(0x0D);
+        // prevent recursion
+        assert !(os instanceof PetsciiOptimizingOutputStream);
+        // cache everything in a byte array.  we can't just wrap
+        // the existing one because that would close it at the end,
+        // and the caller won't be able to add trailing info.
+        try(ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                PetsciiOptimizingOutputStream poos = new PetsciiOptimizingOutputStream(baos)) {
+            writeData((PetsciiOptimizingOutputStream) poos);
+            os.write(baos.toByteArray());
         }
-
     }
 
 }

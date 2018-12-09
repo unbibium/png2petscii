@@ -46,6 +46,10 @@ public class PetsciiScreen extends Screen {
     public BufferedImage toBufferedImage() {
         int h = contents.size();
         int w = contents.stream().map(List::size).max(Integer::compare).orElse(0);
+        // strip any blank lines at end
+        while(h>0 && contents.get(h-1).isEmpty()) {
+            h--;
+        }
         if (h == 0 || w == 0) {
             throw new IllegalStateException("screen is empty");
         }

@@ -71,13 +71,6 @@ public enum PetsciiColor {
     }
     
     /**
-     * @return the screen code to poke to memory to get this color.
-     */
-    public byte getColorCode() {
-        return (byte) this.ordinal();
-    }
-    
-    /**
      * 
      * @param other
      * @return the difference between the color level of the two colors.

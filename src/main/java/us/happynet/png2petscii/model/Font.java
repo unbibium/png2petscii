@@ -8,6 +8,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import javafx.scene.image.Image;
 import javax.imageio.ImageIO;
 
 /**
@@ -21,7 +22,8 @@ abstract public class Font<G extends Glyph> {
     private static final Map<String,PetsciiFont> LOADED_FONTS = new HashMap<>();
     private static final List<String> FONT_NAMES = Arrays.asList(
             "lowercase color","uppercase color",
-            "lowercase mono","uppercase mono");
+            "lowercase mono","uppercase mono",
+            "ATASCII");
     
     /**
      * Factory method for fonts.
@@ -29,15 +31,24 @@ abstract public class Font<G extends Glyph> {
      * @return
      * @throws IOException 
      */
-    public static PetsciiFont get(String s) throws IOException {
+    public static Font get(String s) throws IOException {
         if(LOADED_FONTS.containsKey(s)) {
             return LOADED_FONTS.get(s);
         }
-        String filename = s.contains("uppercase") ? "charset_upper.png" : "charset_lower.png";
         ClassLoader cl = Font.class.getClassLoader();
+        String filename = s.contains("ATASCII") 
+                ? "atascii.bin" 
+                : (s.contains("uppercase") 
+                    ? "charset_upper.png" 
+                    : "charset_lower.png");
         try (InputStream is = cl.getResourceAsStream(filename)) {
             if (is == null) {
                 throw new FileNotFoundException(filename);
+            }
+            if(s.contains("ATASCII")) {
+                byte[] bytes = new byte[1024];
+                is.read(bytes);
+                return new AtasciiFont(bytes);
             }
             BufferedImage im = ImageIO.read(is);
             PetsciiFont result = new PetsciiFont(im);
@@ -77,5 +88,21 @@ abstract public class Font<G extends Glyph> {
      * @return all glyphs that are allowed to be used in output files
      */
     abstract public Iterable<G> getAvailableGlyphs();
+
+    public Screen<? extends Font,G> convert(Image image) {
+        Screen<? extends Font,G> result = newScreen();
+        result.convert(image);
+        return result;
+    }
+    
+    public Screen<? extends Font,G> convert(BufferedImage image) {
+        Screen<? extends Font,G> result = newScreen();
+        result.convert(image);
+        return result;
+    }
+
+    abstract public Screen<? extends Font,G> newScreen();
+
+    abstract public byte[] getNewline();
     
 }

@@ -14,6 +14,8 @@ import java.io.OutputStream;
 import org.junit.Assert;
 import org.junit.Test;
 import us.happynet.png2petscii.model.Screen;
+import static org.mockito.Mockito.*;
+import us.happynet.png2petscii.model.Font;
 
 /**
  *
@@ -23,7 +25,7 @@ public class ScreenWriterTest {
     
     @Test
     public void testWriteFile() throws IOException {
-        ScreenWriter sw = new ScreenWriterImpl();
+        ScreenWriterImpl sw = new ScreenWriterImpl();
         File tmp = File.createTempFile("ScreenWriter", ".txt");
         try {
             sw.write(tmp);
@@ -40,10 +42,11 @@ public class ScreenWriterTest {
         
     }
 
-    private static class ScreenWriterImpl extends ScreenWriter<Screen> {
+    // TODO: redesign whole thing with mock objects
+    private static class ScreenWriterImpl extends ScreenWriter {
 
         public ScreenWriterImpl() {
-            super(new Screen() {
+            super(new Screen(mock(Font.class)) {
                 @Override
                 public void convert(BufferedImage image) {
                     throw new UnsupportedOperationException("Writer is not responsible for conversions.");
@@ -52,6 +55,11 @@ public class ScreenWriterTest {
                 @Override
                 public void writeData(OutputStream os) throws IOException {
                     os.write(99); // the actual data
+                }
+
+                @Override
+                public BufferedImage toBufferedImage() {
+                    throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
                 }
             });
         }

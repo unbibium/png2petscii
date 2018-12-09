@@ -102,7 +102,7 @@ public class PetsciiOptimizingOutputStreamTest {
         // fill input array with {'0', BLK, '0', BLK, '0'}
         // fill expected array with {'0', BLK, '0', '0' }
         for(PetsciiColor color : PetsciiColor.values()) {
-            byte c = (byte) Integer.toHexString(color.getColorCode()).charAt(0);
+            byte c = (byte) Integer.toHexString(color.ordinal()).charAt(0);
             byte[] input = {c, color.getPetscii(), c, color.getPetscii(), c };
             byte[] expectedOutput = {c, color.getPetscii(), c, c };
             instance.write(input);

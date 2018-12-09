@@ -56,21 +56,22 @@ public class PetsciiFont extends Font<PetsciiGlyph> {
         return glyphs.get(i);
     }
 
-    public PetsciiScreen convert(Image image) {
-        PetsciiScreen result = new PetsciiScreen(this);
-        result.convert(image);
-        return result;
-    }
-    
-    public PetsciiScreen convert(BufferedImage image) {
-        PetsciiScreen result = new PetsciiScreen(this);
-        result.convert(image);
-        return result;
-    }
-
     @Override
     public Iterable<PetsciiGlyph> getAvailableGlyphs() {
         return glyphs;
     }
+
+    @Override
+    public Screen newScreen() {
+        return new PetsciiScreen(this);
+    }
     
+    private static final byte[] NEWLINE = { 13 };
+
+    @Override
+    public byte[] getNewline() {
+        return NEWLINE;
+    }
+    
+
 }

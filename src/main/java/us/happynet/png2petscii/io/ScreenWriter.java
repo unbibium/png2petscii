@@ -8,22 +8,28 @@ import java.io.OutputStream;
 import us.happynet.png2petscii.model.Screen;
 
 /**
- *
+ * Writes the contents of a screen to a file or output screen.
+ * <p>
+ * This class writes a raw text file with no other embellishments.
+ * Other classes may output program files or other file formats.
+ * 
  * @author nickb
- * @param <T> Concrete screen class
  */
-abstract public class ScreenWriter<T extends Screen> {
+public class ScreenWriter {
 
-    protected final T source;
+    protected final Screen source;
 
-    protected ScreenWriter(T source) {
+    public ScreenWriter(Screen source) {
         if (source == null) {
             throw new NullPointerException("constructed with null screen");
         }
         this.source = source;
     }
 
-    abstract public void write(OutputStream os) throws IOException;
+
+    public void write(OutputStream os) throws IOException {
+        source.writeData(os);
+    }
 
     /**
      * Writes the attached screen's data to the specified output file.

@@ -2,7 +2,7 @@ package us.happynet.png2petscii.io;
 
 import java.io.IOException;
 import java.io.OutputStream;
-import us.happynet.png2petscii.model.PetsciiScreen;
+import us.happynet.png2petscii.model.Screen;
 
 /**
  * Writer for raw PRG files.
@@ -19,7 +19,7 @@ import us.happynet.png2petscii.model.PetsciiScreen;
  */
 public class PrgWriter extends SeqWriter {
 
-    public PrgWriter(PetsciiScreen source) {
+    public PrgWriter(Screen source) {
         super(source);
     }
 

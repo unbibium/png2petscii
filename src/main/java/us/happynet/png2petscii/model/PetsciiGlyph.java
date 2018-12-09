@@ -50,7 +50,8 @@ public class PetsciiGlyph extends Glyph {
     
     public static final byte RVS_ON = 0x12;
     public static final byte RVS_OFF = (byte) 0x92;
-    
+    public static final byte CRSR_RIGHT = 0x1D;
+
     /**
      * Writes the PETSCII bytes to display this glyph to the
      * specified output stream.  Will always write a RVS_ON
@@ -60,6 +61,10 @@ public class PetsciiGlyph extends Glyph {
      */
     @Override
     public void writeData(OutputStream os) throws IOException {
+        if((byte) 0x20 == (screenCode & 0xBF)) {
+            os.write(CRSR_RIGHT);
+            return;
+        } 
         os.write ( (screenCode > 128) ? RVS_ON : RVS_OFF );
         byte lowBits = (byte) (screenCode & 0x7F);
         switch(lowBits & 0x60) {

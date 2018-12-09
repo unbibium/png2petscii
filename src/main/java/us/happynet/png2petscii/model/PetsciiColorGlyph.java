@@ -67,6 +67,10 @@ public class PetsciiColorGlyph extends PetsciiGlyph {
      */    
     @Override
     public void writeData(OutputStream os) throws IOException {
+        if((byte) 0x20 == (screenCode & 0xBF)) {
+            os.write(CRSR_RIGHT);
+            return;
+        } 
         os.write(foreground.getPetscii());
         super.writeData(os);
     }

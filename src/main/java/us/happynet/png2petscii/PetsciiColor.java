@@ -2,6 +2,9 @@ package us.happynet.png2petscii;
 
 /**
  * An enumeration of color codes supported by the VIC-II chip.
+ * <p>
+ * Color palette taken from 
+ * {@linkplain http://unusedino.de/ec64/technical/misc/vic656x/colors/}
  * 
  * @author nickb
  */
@@ -9,20 +12,20 @@ public enum PetsciiColor {
 
     BLACK       (0x000000, 144),
     WHITE       (0xFFFFFF, 5),
-    RED         (0xFF0000, 28 ),
-    CYAN        (0x00FFFF, 159),
-    PURPLE      (0xFF00FF, 156),
-    GREEN       (0x00FF00, 30 ),
-    BLUE        (0x0000FF, 31 ),
-    YELLOW      (0xFFFF00, 158 ),
-    ORANGE      (0xFF8000, 129 ),
-    BROWN       (0x804000, 149 ),
-    LIGHT_RED   (0xFF8080, 150 ),
-    DARK_GRAY   (0x404040, 151 ),
-    MID_GRAY    (0x808080, 152 ),
-    LIGHT_GREEN (0x80FF80, 153 ),
-    LIGHT_BLUE  (0x8080FF, 154 ),
-    LIGHT_GRAY  (0xC0C0C0, 155 );
+    RED         (0x6B372B, 28 ),
+    CYAN        (0x70A4B2, 159),
+    PURPLE      (0x6F3D86, 156),
+    GREEN       (0x588D43, 30 ),
+    BLUE        (0x352879, 31 ),
+    YELLOW      (0xB8C76F, 158 ),
+    ORANGE      (0x6F4F25, 129 ),
+    BROWN       (0x433900, 149 ),
+    LIGHT_RED   (0x9A6759, 150 ),
+    DARK_GRAY   (0x444444, 151 ),
+    MID_GRAY    (0x6C6C6C, 152 ),
+    LIGHT_GREEN (0x9AD284, 153 ),
+    LIGHT_BLUE  (0x6C5EB5, 154 ),
+    LIGHT_GRAY  (0x959595, 155 );
 
     private final int color;
     private final byte code;

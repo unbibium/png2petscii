@@ -11,14 +11,11 @@ the uppercase/graphics or lowercase/uppercase character sets.
 
 You can save the output as a raw text file, or a program file that
 will print the output.  Program files can be saved in PRG or P00
-format so that you can see them on an emulator.  The output is very 
-inefficient; it sends a redundant RVS ON/OFF and color code for each
-character.
+format so that you can see them on an emulator.
 
 Future plans
 ------------
 
-* Optimize PETSCII output.
 * Image preprocessing.
   * quantize source image to C64 palette
   * quantize each tile to most plentiful color

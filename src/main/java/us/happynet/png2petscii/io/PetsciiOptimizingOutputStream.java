@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.util.Arrays;
 import us.happynet.png2petscii.model.PetsciiColor;
+import static us.happynet.png2petscii.model.PetsciiGlyph.CRSR_RIGHT;
 import static us.happynet.png2petscii.model.PetsciiGlyph.RVS_OFF;
 import static us.happynet.png2petscii.model.PetsciiGlyph.RVS_ON;
 
@@ -36,6 +37,12 @@ public class PetsciiOptimizingOutputStream extends FilterOutputStream {
 
     @Override
     public void write(int b) throws IOException {
+        // Turn unnecessary CRSR_RIGHTs back into SPACE
+        // so that ASCII users on BBSes can see them.
+        if(b == CRSR_RIGHT && !reverse) {
+            out.write(0x20);
+            return;
+        }
         if(b == RVS_ON) {
             if (reverse) return;
             reverse=true;

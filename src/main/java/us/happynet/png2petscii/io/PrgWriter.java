@@ -17,7 +17,7 @@ import us.happynet.png2petscii.model.Screen;
  *
  * @author nickb
  */
-public class PrgWriter extends SeqWriter {
+public class PrgWriter extends ScreenWriter {
 
     public PrgWriter(Screen source) {
         super(source);

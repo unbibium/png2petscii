@@ -68,13 +68,13 @@ public class FXMLController implements Initializable {
     }
 
     private static final ExtensionFilter S00_FORMAT = new ExtensionFilter(
-            "S00 Sequential File", "*.S00");
+            "S00 Sequential File", "*.s00");
     private static final ExtensionFilter TXT_FORMAT = new ExtensionFilter(
             "Text File", "*.txt", "*.seq");
     private static final ExtensionFilter P00_FORMAT = new ExtensionFilter(
-            "P00 Program File", "*.P00");
+            "P00 Program File", "*.p00");
     private static final ExtensionFilter PRG_FORMAT = new ExtensionFilter(
-            "Program File", "*.PRG");
+            "Program File", "*.prg");
 
     @FXML
     private void handleSave(ActionEvent event) {

@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package us.happynet.png2petscii;
+package us.happynet.png2petscii.model;
 
 import java.io.File;
 import java.io.IOException;

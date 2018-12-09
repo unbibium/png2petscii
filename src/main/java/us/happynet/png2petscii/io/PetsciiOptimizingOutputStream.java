@@ -9,9 +9,9 @@ import java.io.FilterOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.Arrays;
-import us.happynet.png2petscii.PetsciiColor;
-import static us.happynet.png2petscii.PetsciiGlyph.RVS_OFF;
-import static us.happynet.png2petscii.PetsciiGlyph.RVS_ON;
+import us.happynet.png2petscii.model.PetsciiColor;
+import static us.happynet.png2petscii.model.PetsciiGlyph.RVS_OFF;
+import static us.happynet.png2petscii.model.PetsciiGlyph.RVS_ON;
 
 /**
  * Filters redundant control codes from a stream of PETSCII output.

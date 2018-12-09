@@ -1,5 +1,7 @@
-package us.happynet.png2petscii;
+package us.happynet.png2petscii.model;
 
+import us.happynet.png2petscii.model.PetsciiFont;
+import us.happynet.png2petscii.model.PetsciiGlyph;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 import java.io.File;

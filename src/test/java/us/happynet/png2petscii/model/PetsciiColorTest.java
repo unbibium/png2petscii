@@ -1,9 +1,10 @@
-package us.happynet.png2petscii;
+package us.happynet.png2petscii.model;
 
+import us.happynet.png2petscii.model.PetsciiColor;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import org.junit.Test;
-import static us.happynet.png2petscii.PetsciiColor.*;
+import static us.happynet.png2petscii.model.PetsciiColor.*;
 
 /**
  * This performs some sanity checks to make sure that I don't

@@ -3,8 +3,10 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package us.happynet.png2petscii;
+package us.happynet.png2petscii.model;
 
+import us.happynet.png2petscii.model.PetsciiFont;
+import us.happynet.png2petscii.model.PetsciiGlyph;
 import java.awt.image.BufferedImage;
 import java.awt.image.Raster;
 import java.io.File;

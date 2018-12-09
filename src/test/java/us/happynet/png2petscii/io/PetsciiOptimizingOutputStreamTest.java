@@ -6,7 +6,7 @@ import java.io.OutputStream;
 import static org.junit.Assert.assertArrayEquals;
 import org.junit.Before;
 import org.junit.Test;
-import us.happynet.png2petscii.PetsciiColor;
+import us.happynet.png2petscii.model.PetsciiColor;
 
 /**
  * Filters out redundant color and reverse codes from PETSCII output.

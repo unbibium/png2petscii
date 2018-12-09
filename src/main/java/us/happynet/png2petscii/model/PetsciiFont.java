@@ -1,14 +1,11 @@
-package us.happynet.png2petscii;
+package us.happynet.png2petscii.model;
 
-import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
-import java.awt.image.Raster;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.function.Supplier;
 import javafx.scene.image.Image;
 import javax.imageio.ImageIO;
 

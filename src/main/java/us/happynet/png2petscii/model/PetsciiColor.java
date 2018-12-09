@@ -1,4 +1,4 @@
-package us.happynet.png2petscii;
+package us.happynet.png2petscii.model;
 
 /**
  * An enumeration of color codes supported by the VIC-II chip.

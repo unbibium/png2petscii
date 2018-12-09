@@ -13,7 +13,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import org.junit.Assert;
 import org.junit.Test;
-import us.happynet.png2petscii.Screen;
+import us.happynet.png2petscii.model.Screen;
 
 /**
  *

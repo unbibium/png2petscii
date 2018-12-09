@@ -3,7 +3,7 @@ package us.happynet.png2petscii.io;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
-import us.happynet.png2petscii.PetsciiScreen;
+import us.happynet.png2petscii.model.PetsciiScreen;
 
 /**
  *

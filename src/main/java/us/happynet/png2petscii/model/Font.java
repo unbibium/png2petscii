@@ -1,4 +1,4 @@
-package us.happynet.png2petscii;
+package us.happynet.png2petscii.model;
 
 import java.awt.image.BufferedImage;
 import java.io.FileNotFoundException;

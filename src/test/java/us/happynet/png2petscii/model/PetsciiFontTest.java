@@ -8,8 +8,6 @@ package us.happynet.png2petscii.model;
 import us.happynet.png2petscii.model.PetsciiFont;
 import us.happynet.png2petscii.model.PetsciiGlyph;
 import java.awt.image.BufferedImage;
-import java.awt.image.Raster;
-import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.logging.Level;

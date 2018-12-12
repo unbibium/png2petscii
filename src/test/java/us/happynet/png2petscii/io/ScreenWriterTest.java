@@ -16,6 +16,7 @@ import org.junit.Test;
 import us.happynet.png2petscii.model.Screen;
 import static org.mockito.Mockito.*;
 import us.happynet.png2petscii.model.Font;
+import us.happynet.png2petscii.model.Glyph;
 
 /**
  *
@@ -46,7 +47,7 @@ public class ScreenWriterTest {
     private static class ScreenWriterImpl extends ScreenWriter {
 
         public ScreenWriterImpl() {
-            super(new Screen(mock(Font.class)) {
+            super(new Screen<Font<Glyph>, Glyph>(mock(Font.class)) {
                 @Override
                 public void convert(BufferedImage image) {
                     throw new UnsupportedOperationException("Writer is not responsible for conversions.");

@@ -1,6 +1,5 @@
 package us.happynet.png2petscii.model;
 
-import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.OutputStream;
 

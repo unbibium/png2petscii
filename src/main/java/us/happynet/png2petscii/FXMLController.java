@@ -1,8 +1,8 @@
 package us.happynet.png2petscii;
 
-import us.happynet.png2petscii.model.PetsciiScreen;
 import us.happynet.png2petscii.model.Font;
-import us.happynet.png2petscii.io.P00Writer;
+import us.happynet.png2petscii.model.Glyph;
+
 import java.awt.image.BufferedImage;
 import java.io.BufferedInputStream;
 import java.io.File;
@@ -27,8 +27,6 @@ import javafx.scene.image.ImageView;
 import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
 import javafx.stage.Window;
-import us.happynet.png2petscii.io.PrgWriter;
-import us.happynet.png2petscii.io.ScreenWriter;
 import us.happynet.png2petscii.model.Screen;
 
 public class FXMLController implements Initializable {
@@ -40,11 +38,11 @@ public class FXMLController implements Initializable {
     @FXML
     private ImageView dstImage;
     @FXML
-    private ChoiceBox outputChoice;
+    private ChoiceBox<String> outputChoice;
 
     // program state
     private File selectedFile;
-    private Screen outputScreen;
+    private Screen<? extends Font<? extends Glyph>,? extends Glyph> outputScreen;
 
     @FXML
     private void handleOpen(ActionEvent event) {
@@ -67,14 +65,6 @@ public class FXMLController implements Initializable {
         }
     }
 
-    private static final ExtensionFilter S00_FORMAT = new ExtensionFilter(
-            "S00 Sequential File", "*.s00");
-    private static final ExtensionFilter TXT_FORMAT = new ExtensionFilter(
-            "Text File", "*.txt", "*.seq");
-    private static final ExtensionFilter P00_FORMAT = new ExtensionFilter(
-            "P00 Program File", "*.p00");
-    private static final ExtensionFilter PRG_FORMAT = new ExtensionFilter(
-            "Program File", "*.prg");
 
     @FXML
     private void handleSave(ActionEvent event) {
@@ -82,32 +72,12 @@ public class FXMLController implements Initializable {
         Window stage = srcImage.getScene().getWindow();
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Save Output File");
-        fileChooser.getExtensionFilters().add(TXT_FORMAT);
-        if(outputScreen instanceof PetsciiScreen) {
-            fileChooser.getExtensionFilters().addAll(P00_FORMAT, PRG_FORMAT);
-        }
+        OutputFormats.populate(fileChooser, outputScreen.getClass());
         File outputFile = fileChooser.showSaveDialog(stage);
         ExtensionFilter format = fileChooser.getSelectedExtensionFilter();
-        ScreenWriter writer;
-        // TODO: put these formats in an Enum type with factory methods
-        // or something fancy like that.
-        if (format == P00_FORMAT) {
-            writer = new P00Writer(outputScreen, outputFile);
-        } else if (format == PRG_FORMAT) {
-            writer = new PrgWriter(outputScreen);
-        } else if (format == TXT_FORMAT) {
-            writer = new ScreenWriter(outputScreen);
-        } else if (format == null) {
-            label.setText("null");
-            return;
-        } else {
-            label.setText(format.getDescription() + " not supported yet");
-            return;
-        }
-
         try {
-            writer.write(outputFile);
-            label.setText("Success?");
+            OutputFormats.write(format, outputScreen, outputFile);
+            label.setText("Saved!");
         } catch (IOException ex) {
             Logger.getLogger(FXMLController.class.getName()).log(Level.SEVERE, null, ex);
             label.setText(ex.getMessage());
@@ -135,9 +105,9 @@ public class FXMLController implements Initializable {
     }
 
     private void performConversion() {
-        Font font;
+        Font<? extends Glyph> font;
         try {
-            font = Font.get(outputChoice.getValue().toString());
+            font = Font.get(outputChoice.getValue());
         } catch (IOException ex) {
             // TODO: display error when font can't load
             Logger.getLogger(FXMLController.class.getName()).log(Level.SEVERE, null, ex);

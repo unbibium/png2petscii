@@ -6,7 +6,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
-import javafx.scene.image.Image;
 import javax.imageio.ImageIO;
 
 /**
@@ -62,7 +61,7 @@ public class PetsciiFont extends Font<PetsciiGlyph> {
     }
 
     @Override
-    public Screen newScreen() {
+    public Screen<PetsciiFont,PetsciiGlyph> newScreen() {
         return new PetsciiScreen(this);
     }
     

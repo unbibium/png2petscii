@@ -8,7 +8,6 @@ import java.util.ArrayList;
 import java.util.List;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.scene.image.Image;
-import us.happynet.png2petscii.io.PetsciiOptimizingOutputStream;
 
 /**
  * Abstract class for any screen I might want to write to.

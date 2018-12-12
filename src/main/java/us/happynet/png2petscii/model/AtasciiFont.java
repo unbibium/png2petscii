@@ -5,7 +5,6 @@
  */
 package us.happynet.png2petscii.model;
 
-import java.awt.image.BufferedImage;
 import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -21,7 +20,6 @@ import java.util.List;
  */
 public class AtasciiFont extends Font<AtasciiGlyph> {
     protected final List<AtasciiGlyph> glyphs = new ArrayList<>(256);
-    private final BufferedImage[] images = new BufferedImage[256];
     
     /**
      * @param binFile a 1024-byte font bitmap
@@ -30,7 +28,6 @@ public class AtasciiFont extends Font<AtasciiGlyph> {
     public AtasciiFont(File binFile) throws IOException {
         this(read1K(binFile));
     }
-    
         
     public AtasciiFont(InputStream is) throws IOException {
         this(read1K(is));
@@ -73,7 +70,7 @@ public class AtasciiFont extends Font<AtasciiGlyph> {
     }
 
     @Override
-    public Screen<? extends Font, AtasciiGlyph> newScreen() {
+    public Screen<? extends Font<AtasciiGlyph>, AtasciiGlyph> newScreen() {
         return new AtasciiScreen(this);
     }
 

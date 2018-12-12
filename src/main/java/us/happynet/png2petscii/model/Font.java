@@ -31,7 +31,7 @@ abstract public class Font<G extends Glyph> {
      * @return
      * @throws IOException 
      */
-    public static Font get(String s) throws IOException {
+    public static Font<? extends Glyph> get(String s) throws IOException {
         if(LOADED_FONTS.containsKey(s)) {
             return LOADED_FONTS.get(s);
         }
@@ -60,7 +60,7 @@ abstract public class Font<G extends Glyph> {
         }    
     }
     
-    public static List getFontNames() {
+    public static List<String> getFontNames() {
         return FONT_NAMES;
     }
 
@@ -89,19 +89,19 @@ abstract public class Font<G extends Glyph> {
      */
     abstract public Iterable<G> getAvailableGlyphs();
 
-    public Screen<? extends Font,G> convert(Image image) {
-        Screen<? extends Font,G> result = newScreen();
+    public Screen<? extends Font<G>,G> convert(Image image) {
+        Screen<? extends Font<G>,G> result = newScreen();
         result.convert(image);
         return result;
     }
     
-    public Screen<? extends Font,G> convert(BufferedImage image) {
-        Screen<? extends Font,G> result = newScreen();
+    public Screen<? extends Font<G>,G> convert(BufferedImage image) {
+        Screen<? extends Font<G>,G> result = newScreen();
         result.convert(image);
         return result;
     }
 
-    abstract public Screen<? extends Font,G> newScreen();
+    abstract public Screen<? extends Font<G>,G> newScreen();
 
     abstract public byte[] getNewline();
     

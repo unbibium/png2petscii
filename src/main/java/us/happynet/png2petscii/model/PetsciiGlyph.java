@@ -1,6 +1,5 @@
 package us.happynet.png2petscii.model;
 
-import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.OutputStream;
 
@@ -9,39 +8,16 @@ import java.io.OutputStream;
  *
  * @author nickb
  */
-public class PetsciiGlyph extends Glyph {
-
-    public PetsciiGlyph(BufferedImage glyphImage, int screenCode) {
-        this(glyphImage, screenCode, PetsciiColor.WHITE, PetsciiColor.BLACK);
-    }
-    
-    /**
-     * build glyph from buffered sub-image
-     * @param glyphImage an 8x8 BufferedImage that can be read
-     * @param screenCode 
-     * @param foreground 
-     * @param background 
-     */
-    public PetsciiGlyph(BufferedImage glyphImage, int screenCode, PetsciiColor foreground, PetsciiColor background) {
-        super(screenCode,foreground,background);
-        if(glyphImage.getHeight() != 8 || glyphImage.getWidth() != 8) {
-            throw new IllegalArgumentException("need 8x8, was " + glyphImage.getWidth() + "x" + glyphImage.getHeight());
-        }
-        final int minx = glyphImage.getMinX();
-        final int miny = glyphImage.getMinY();
-        for (int y = 0; y<8; y++) { 
-            for (int x = 0; x<8; x++) { 
-                boolean bit = (glyphImage.getRGB(minx+x,miny+y) & 0xFFFFFF) != 0;
-                bitmap[x][y] = bit;
-                rgbArray[x+y*8]=(bit ? foreground:background).getRGB();
-            } 
-        }
-        // needs to be stored as a JavaFX image
-        
-    }
+public class PetsciiGlyph extends ColorGlyph {
 
     public PetsciiGlyph(byte[] data, int screenCode, PetsciiColor foreground, PetsciiColor background) {
         super(data, screenCode, foreground, background);
+        for (int y = 0; y<8; y++) { 
+            for (int x = 0; x<8; x++) { 
+                boolean bit = bitmap(x,y);
+                rgbArray[x+y*8]=(bit ? foreground:background).getRGB();
+            } 
+        }
     }
     
     public PetsciiGlyph(byte[] data, int screenCode) {

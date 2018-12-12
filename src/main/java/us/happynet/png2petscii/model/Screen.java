@@ -14,28 +14,32 @@ import javafx.scene.image.Image;
  *
  * @author nickb
  * @param <F> font class
- * @param <G> glyph class
  */
-abstract public class Screen<F extends Font<G>,G extends Glyph> {
-    protected final List<List<G>> contents;
-    protected List<G> currentLine;
+abstract public class Screen<F extends Font> {
+    protected final List<List<Glyph>> contents;
+    protected List<Glyph> currentLine;
     protected final F font;
+    private final PetsciiColor background;
 
     public final void newline() {
         currentLine = new ArrayList<>();
         contents.add(currentLine);
     }
 
-    public void type(G glyph) {
+    public void type(Glyph glyph) {
         currentLine.add(glyph);
     }
 
-    public Screen(F font) {
+    public Screen(F font, PetsciiColor background) {
         this.font = font;
+        this.background = background;
         contents = new ArrayList<>();
         newline();
     }
 
+    public PetsciiColor getBackground() {
+        return background;
+    }
     
     public BufferedImage toBufferedImage() {
         int h = contents.size();
@@ -53,9 +57,9 @@ abstract public class Screen<F extends Font<G>,G extends Glyph> {
     public BufferedImage toBufferedImage(int w, int h) {
         BufferedImage bi = new BufferedImage(w, h, BufferedImage.TYPE_INT_RGB);
         int y = 0;
-        for (List<G> row : contents) {
+        for (List<Glyph> row : contents) {
             int x = 0;
-            for (G glyph : row) {
+            for (Glyph glyph : row) {
                 try {
                     bi.setRGB(x, y, 8, 8, glyph.getRGBArray(), 0, 8);
                 } catch (ArrayIndexOutOfBoundsException ex) {
@@ -71,7 +75,6 @@ abstract public class Screen<F extends Font<G>,G extends Glyph> {
                 break;
             }
         }
-        System.out.println("Generated a buffered image.");
         return bi;
     }
     
@@ -97,8 +100,8 @@ abstract public class Screen<F extends Font<G>,G extends Glyph> {
      * @throws IOException if there is any problem
      */
     public void writeData(OutputStream os) throws IOException {
-        for (List<G> row : contents) {
-            for (G glyph : row) {
+        for (List<Glyph> row : contents) {
+            for (Glyph glyph : row) {
                 glyph.writeData(os);
             }
             writeNewLine(os);
@@ -120,8 +123,7 @@ abstract public class Screen<F extends Font<G>,G extends Glyph> {
             for (int column = 0; column < width; column += 8) {
                 try {
                     BufferedImage tile = image.getSubimage(column, row, 8, 8);
-                    G g = font.findClosest(tile);
-                    type(g);
+                    type(findClosest(tile));
                 } catch (RasterFormatException rfe) {
                     // TODO: figure out what to do with partial tiles
                 }
@@ -134,5 +136,34 @@ abstract public class Screen<F extends Font<G>,G extends Glyph> {
         os.write(13);
         os.write(10);
     }
+
+    /**
+     * Find the closest glyph that can be typed in this screen's
+     * font and background color.
+     * @param tile
+     * @return 
+     */
+    protected Glyph findClosest(BufferedImage tile) {
+        Glyph result = null;
+        double score = Double.POSITIVE_INFINITY;
+        for(Glyph glyph : getAvailableGlyphs()) {
+            double newscore = glyph.diff(tile);
+            if (newscore < score) {
+                score = newscore;
+                result = glyph;
+            }
+        }
+        return result;
+    }
+
+    /**
+     * TODO: Loop through all available glyphs from font
+     * AND colors
+     * @return all glyphs that can be typed on this screen
+     */
+    private Iterable<Glyph> getAvailableGlyphs() {
+        return font.getAvailableGlyphs();
+    }
+    
 
 }

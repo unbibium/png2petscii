@@ -1,6 +1,9 @@
 package us.happynet.png2petscii.model;
 
 import java.awt.image.BufferedImage;
+import java.io.BufferedInputStream;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
@@ -9,7 +12,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import javafx.scene.image.Image;
-import javax.imageio.ImageIO;
 
 /**
  * generic Font class
@@ -19,7 +21,7 @@ import javax.imageio.ImageIO;
  */
 abstract public class Font<G extends Glyph> {
 
-    private static final Map<String,PetsciiFont> LOADED_FONTS = new HashMap<>();
+    private static final Map<String,Font<? extends Glyph>> LOADED_FONTS = new HashMap<>();
     private static final List<String> FONT_NAMES = Arrays.asList(
             "lowercase color","uppercase color",
             "lowercase mono","uppercase mono",
@@ -39,8 +41,8 @@ abstract public class Font<G extends Glyph> {
         String filename = s.contains("ATASCII") 
                 ? "atascii.bin" 
                 : (s.contains("uppercase") 
-                    ? "charset_upper.png" 
-                    : "charset_lower.png");
+                    ? "c64upper.bin" 
+                    : "c64lower.bin");
         try (InputStream is = cl.getResourceAsStream(filename)) {
             if (is == null) {
                 throw new FileNotFoundException(filename);
@@ -50,8 +52,7 @@ abstract public class Font<G extends Glyph> {
                 is.read(bytes);
                 return new AtasciiFont(bytes);
             }
-            BufferedImage im = ImageIO.read(is);
-            PetsciiFont result = new PetsciiFont(im);
+            PetsciiFont result = new PetsciiFont(is);
             if(s.contains("color") ) {
                 result = new PetsciiColorFont(result);
             }
@@ -63,6 +64,20 @@ abstract public class Font<G extends Glyph> {
     public static List<String> getFontNames() {
         return FONT_NAMES;
     }
+    
+    protected static byte[] read1K(File binFile) throws IOException {
+        try(FileInputStream fis = new FileInputStream(binFile);
+            BufferedInputStream bis = new BufferedInputStream(fis)) {
+            return read1K(bis);
+        }
+    }
+    
+    protected static byte[] read1K(InputStream is) throws IOException {
+        byte[] result = new byte[1024];
+        int readResult = is.read(result);
+        return result;
+    }
+
 
     
     public G findClosest(BufferedImage tile) {
@@ -89,19 +104,19 @@ abstract public class Font<G extends Glyph> {
      */
     abstract public Iterable<G> getAvailableGlyphs();
 
-    public Screen<? extends Font<G>,G> convert(Image image) {
-        Screen<? extends Font<G>,G> result = newScreen();
+    public Screen<? extends Font<G>> convert(Image image) {
+        Screen<? extends Font<G>> result = newScreen();
         result.convert(image);
         return result;
     }
     
-    public Screen<? extends Font<G>,G> convert(BufferedImage image) {
-        Screen<? extends Font<G>,G> result = newScreen();
+    public Screen<? extends Font<G>> convert(BufferedImage image) {
+        Screen<? extends Font<G>> result = newScreen();
         result.convert(image);
         return result;
     }
 
-    abstract public Screen<? extends Font<G>,G> newScreen();
+    abstract public Screen<? extends Font<G>> newScreen();
 
     abstract public byte[] getNewline();
     

@@ -1,7 +1,7 @@
 package us.happynet.png2petscii;
 
 import us.happynet.png2petscii.model.Font;
-import us.happynet.png2petscii.model.Glyph;
+import us.happynet.png2petscii.model.ColorGlyph;
 
 import java.awt.image.BufferedImage;
 import java.io.BufferedInputStream;
@@ -27,6 +27,7 @@ import javafx.scene.image.ImageView;
 import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
 import javafx.stage.Window;
+import us.happynet.png2petscii.model.Glyph;
 import us.happynet.png2petscii.model.Screen;
 
 public class FXMLController implements Initializable {
@@ -42,7 +43,7 @@ public class FXMLController implements Initializable {
 
     // program state
     private File selectedFile;
-    private Screen<? extends Font<? extends Glyph>,? extends Glyph> outputScreen;
+    private Screen<? extends Font<? extends Glyph>> outputScreen;
 
     @FXML
     private void handleOpen(ActionEvent event) {

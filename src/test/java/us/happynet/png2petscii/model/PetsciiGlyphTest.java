@@ -1,13 +1,12 @@
 package us.happynet.png2petscii.model;
 
-import us.happynet.png2petscii.model.PetsciiFont;
-import us.happynet.png2petscii.model.PetsciiGlyph;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import org.junit.Assert;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import org.junit.AssumptionViolatedException;
 import org.junit.Test;
@@ -35,7 +34,7 @@ public class PetsciiGlyphTest {
         }
     }
 
-    private static final PetsciiFont LOWERCASE_FONT = getFont("charset_lower.png");
+    private static final PetsciiFont LOWERCASE_FONT = getFont("c64lower.bin");
     
     @Test
     public void canInitializeWithBytes() {
@@ -60,6 +59,7 @@ public class PetsciiGlyphTest {
     public void diffOtherCharacterNotEqualZero() {
         PetsciiGlyph atSignGlyph = new PetsciiGlyph(AT_SIGN_BYTES, 0);
         BufferedImage letterAImage = LOWERCASE_FONT.getImage(1);
+        assertNotNull("font has image 1", letterAImage);
         assertTrue(atSignGlyph.diff(letterAImage) > 0);
     }
     
@@ -75,6 +75,7 @@ public class PetsciiGlyphTest {
     public void differenceIsHighestWithReversedSelf() {
         PetsciiGlyph atSignGlyph = new PetsciiGlyph(AT_SIGN_BYTES, 0);
         BufferedImage reverseAtSignImage = LOWERCASE_FONT.getImage(128);
+        assertNotNull("font has image at 128", reverseAtSignImage);
         double maxDiff = atSignGlyph.diff(reverseAtSignImage);
         for(int i=1; i<256; i++) {
             if(i==128) continue;

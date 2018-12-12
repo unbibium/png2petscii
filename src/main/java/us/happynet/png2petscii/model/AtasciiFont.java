@@ -1,13 +1,6 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package us.happynet.png2petscii.model;
 
-import java.io.BufferedInputStream;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -51,26 +44,13 @@ public class AtasciiFont extends Font<AtasciiGlyph> {
         }
     }
     
-    private static byte[] read1K(File binFile) throws IOException {
-        try(FileInputStream fis = new FileInputStream(binFile);
-            BufferedInputStream bis = new BufferedInputStream(fis)) {
-            return read1K(bis);
-        }
-    }
-    private static byte[] read1K(InputStream is) throws IOException {
-        byte[] result = new byte[1024];
-        int readResult = is.read(result);
-        System.out.printf("read %d bytes for atascii\n", readResult);
-        return result;
-    }
-    
     @Override
     public Iterable<AtasciiGlyph> getAvailableGlyphs() {
         return glyphs;
     }
 
     @Override
-    public Screen<? extends Font<AtasciiGlyph>, AtasciiGlyph> newScreen() {
+    public Screen<? extends Font<AtasciiGlyph>> newScreen() {
         return new AtasciiScreen(this);
     }
 

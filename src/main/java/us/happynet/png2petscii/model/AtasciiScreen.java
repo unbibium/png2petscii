@@ -7,10 +7,10 @@ import java.io.OutputStream;
  *
  * @author nickb
  */
-class AtasciiScreen extends Screen<AtasciiFont,AtasciiGlyph> {
+class AtasciiScreen extends Screen<AtasciiFont> {
 
     public AtasciiScreen(AtasciiFont aThis) {
-        super(aThis);
+        super(aThis, PetsciiColor.BLUE);
     }
     
     @Override

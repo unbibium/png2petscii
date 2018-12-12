@@ -5,8 +5,6 @@
  */
 package us.happynet.png2petscii.model;
 
-import us.happynet.png2petscii.model.PetsciiFont;
-import us.happynet.png2petscii.model.PetsciiGlyph;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.Arrays;
@@ -42,7 +40,7 @@ public class PetsciiFontTest {
 
     static final PetsciiFont getFont() {
         try {    
-            return new PetsciiFont(CL.getResourceAsStream("charset_lower.png"));
+            return new PetsciiFont(CL.getResourceAsStream("c64lower.bin"));
         } catch (IOException ex) {
             Logger.getLogger(PetsciiFontTest.class.getName()).log(Level.SEVERE, null, ex);
             return null;
@@ -51,6 +49,7 @@ public class PetsciiFontTest {
     
     @Before
     public void setUp() throws IOException {
+        FONT.getGlyph(0).dump();
         if(FONT == null) {
             Assume.assumeTrue("couldn't create font object", false);
         }

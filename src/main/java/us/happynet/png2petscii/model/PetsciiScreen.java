@@ -14,10 +14,14 @@ import us.happynet.png2petscii.io.PetsciiOptimizingOutputStream;
  *
  * @author nickb
  */
-public class PetsciiScreen extends Screen<PetsciiFont,PetsciiGlyph> {
+public class PetsciiScreen extends Screen<PetsciiFont> {
 
-    PetsciiScreen(PetsciiFont aThis) {
-        super(aThis);
+    PetsciiScreen(PetsciiFont font) {
+        super(font, PetsciiColor.BLACK);
+    }
+    
+    PetsciiScreen(PetsciiFont font, PetsciiColor background) {
+        super(font, background);
     }
     
     /**

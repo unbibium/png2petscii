@@ -15,8 +15,8 @@ import org.junit.Assert;
 import org.junit.Test;
 import us.happynet.png2petscii.model.Screen;
 import static org.mockito.Mockito.*;
-import us.happynet.png2petscii.model.Font;
-import us.happynet.png2petscii.model.Glyph;
+import org.mockito.invocation.InvocationOnMock;
+import org.mockito.stubbing.Answer;
 
 /**
  *
@@ -26,7 +26,8 @@ public class ScreenWriterTest {
     
     @Test
     public void testWriteFile() throws IOException {
-        ScreenWriterImpl sw = new ScreenWriterImpl();
+        Screen scr = mock(Screen.class);
+        ScreenWriterImpl sw = new ScreenWriterImpl(scr);
         File tmp = File.createTempFile("ScreenWriter", ".txt");
         try {
             sw.write(tmp);
@@ -46,23 +47,14 @@ public class ScreenWriterTest {
     // TODO: redesign whole thing with mock objects
     private static class ScreenWriterImpl extends ScreenWriter {
 
-        public ScreenWriterImpl() {
-            super(new Screen<Font<Glyph>, Glyph>(mock(Font.class)) {
-                @Override
-                public void convert(BufferedImage image) {
-                    throw new UnsupportedOperationException("Writer is not responsible for conversions.");
-                }
-
-                @Override
-                public void writeData(OutputStream os) throws IOException {
-                    os.write(99); // the actual data
-                }
-
-                @Override
-                public BufferedImage toBufferedImage() {
-                    throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-                }
-            });
+        public ScreenWriterImpl(Screen scr) throws IOException {
+            super(scr);
+            Answer s = (Answer) (InvocationOnMock invocation) -> {
+                OutputStream os = (OutputStream) invocation.getArguments()[0];
+                os.write(99);
+                return null;
+            };
+            doAnswer(s).when(scr).writeData(any());
         }
 
         @Override

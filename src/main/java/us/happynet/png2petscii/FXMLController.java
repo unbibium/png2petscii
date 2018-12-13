@@ -1,7 +1,6 @@
 package us.happynet.png2petscii;
 
 import us.happynet.png2petscii.model.Font;
-import us.happynet.png2petscii.model.ColorGlyph;
 
 import java.awt.image.BufferedImage;
 import java.io.BufferedInputStream;

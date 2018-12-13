@@ -1,7 +1,6 @@
 package us.happynet.png2petscii.model;
 
 import java.awt.image.BufferedImage;
-import java.awt.image.WritableRaster;
 import java.io.IOException;
 import java.io.OutputStream;
 
@@ -16,11 +15,8 @@ import java.io.OutputStream;
  */
 public class PetsciiColorGlyph extends PetsciiGlyph {
 
-    private final int fgBgDifference;
-    
     public PetsciiColorGlyph(byte[] data, int screenCode, PetsciiColor foreground, PetsciiColor background) {
         super(data, screenCode, foreground, background);
-        fgBgDifference = background.diff(foreground);
     }
     
     public PetsciiColorGlyph(PetsciiGlyph aglyph, PetsciiColor foreground, PetsciiColor background) {
@@ -31,30 +27,15 @@ public class PetsciiColorGlyph extends PetsciiGlyph {
         this(aglyph.toBytes(), aglyph.screenCode, foreground, aglyph.getBackgroundColor());
     }
 
+    private static final PixelDiffStrategy COLOR_STRATEGY = new RGBDiffStrategy();
+    
+    /**
+     * @param imgB
+     * @return difference of luma values between this glyph and imgB.
+     */
     @Override
-    public double diff(BufferedImage otherImage) {
-        WritableRaster alphaRaster = otherImage.getAlphaRaster();
-        long difference = 0;
-        for (int y = 0; y < 8; y++) {
-            for (int x = 0; x < 8; x++) {
-                if (alphaRaster != null && alphaRaster.getSample(x, y, 0) > 0) {
-                    if (bitmap(x,y)) {
-                        difference += fgBgDifference;
-                    }
-                } else {
-                    int rgbB = otherImage.getRGB(x, y);
-                    PetsciiColor rgbA = bitmap(x,y) ? foreground : background;
-                    difference += rgbA.diff(rgbB);
-                }
-            }
-        }
-        // Normalizing the value of different pixels
-        // for accuracy(average pixels per color
-        // component)
-        double avg_different_pixels = difference / 192;
-        // There are 255 values of pixels in total
-        double percentage = (avg_different_pixels / 255) * 100;
-        return percentage;
+    public double diff(BufferedImage imgB) {
+        return diff(imgB, COLOR_STRATEGY);
     }
 
     /**

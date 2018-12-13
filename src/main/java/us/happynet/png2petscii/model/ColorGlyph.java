@@ -1,7 +1,6 @@
 package us.happynet.png2petscii.model;
 
 import java.awt.image.BufferedImage;
-import java.awt.image.WritableRaster;
 import javafx.scene.image.PixelWriter;
 import javafx.scene.image.WritableImage;
 
@@ -69,33 +68,37 @@ abstract public class ColorGlyph extends Glyph {
     public int[] getRGBArray() {
         return rgbArray;
     }
+    
+    public int getRGB(int x, int y) {
+        return (bitmap(x, y) ? foreground : background).getRGB();
+    }
 
+    public int getRGB(int index) {
+        return (bitmap(index) ? foreground : background).getRGB();
+    }
+
+    static final PixelDiffStrategy STRATEGY = new LumaDiffStrategy();
+    
     /**
      * @param imgB
      * @return difference of luma values between this glyph and imgB.
      */
     @Override
     public double diff(BufferedImage imgB) {
+        return diff(imgB, STRATEGY);
+    }
+    
+    
+    protected double diff(BufferedImage imgB, PixelDiffStrategy strategy) {
         if(imgB == null) {
             throw new NullPointerException("passed null image to diff()");
         }
-        int fgBgDifference = 255 * 3;
-        final WritableRaster alphaRaster = imgB.getAlphaRaster();
         long difference = 0;
         for (int y = 0; y < 8; y++) {
             for (int x = 0; x < 8; x++) {
-                if (alphaRaster != null && alphaRaster.getSample(x, y, 0) > 0) {
-                    if (bitmap(x,y)) {
-                        difference += fgBgDifference;
-                    }
-                } else {
-                    int rgbB = imgB.getRGB(x, y);
-                    int lumaB = (rgbB >> 16) & 255; 
-                    lumaB +=  (rgbB >> 8) & 255;
-                    lumaB +=  (rgbB) & 255;
-                    int lumaA = bitmap(x,y) ? fgBgDifference : 0;
-                    difference += Math.abs(lumaA - lumaB);
-                }
+                int rgbA = this.getRGB(x, y);
+                int rgbB = imgB.getRGB(x, y);
+                difference += strategy.applyAsInt(rgbA, rgbB);
             }
         }
         // Normalizing the value of different pixels

@@ -25,6 +25,10 @@ abstract public class Glyph {
         return (bytes[y] & (128>>x)) != 0;
     }
 
+    public final boolean bitmap(int index) {
+        return (bytes[index/8] & (128>>(index%8))) != 0;
+    }
+
     public final int getScreenCode() {
         return screenCode;
     }
@@ -49,5 +53,6 @@ abstract public class Glyph {
     abstract void writeData(OutputStream os) throws IOException;
     abstract double diff(BufferedImage tile);
     abstract int[] getRGBArray();
+
     
 }

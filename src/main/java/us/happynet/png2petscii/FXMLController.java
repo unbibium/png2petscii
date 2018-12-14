@@ -10,6 +10,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
+import java.util.Arrays;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -27,6 +28,9 @@ import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
 import javafx.stage.Window;
 import us.happynet.png2petscii.model.Glyph;
+import us.happynet.png2petscii.model.PetsciiColor;
+import us.happynet.png2petscii.model.PetsciiColorFont;
+import us.happynet.png2petscii.model.PetsciiFont;
 import us.happynet.png2petscii.model.Screen;
 
 public class FXMLController implements Initializable {
@@ -39,6 +43,8 @@ public class FXMLController implements Initializable {
     private ImageView dstImage;
     @FXML
     private ChoiceBox<String> outputChoice;
+    @FXML
+    private ChoiceBox<PetsciiColor> bgColorChoice;
 
     // program state
     private File selectedFile;
@@ -114,13 +120,19 @@ public class FXMLController implements Initializable {
 
     private void performConversion() {
         Font font;
+        PetsciiColor bgColor;
         try {
             font = Font.get(outputChoice.getValue());
+            bgColor = bgColorChoice.getValue();
         } catch (IOException ex) {
             // TODO: display error when font can't load
             Logger.getLogger(FXMLController.class.getName()).log(Level.SEVERE, null, ex);
             label.setText(ex.getMessage());
             return;
+        }
+        // TODO find better way to inject background color
+        if(font instanceof PetsciiColorFont) {
+            font = new PetsciiColorFont((PetsciiFont) font, bgColor);
         }
         outputScreen = font.convert(srcImage.getImage());
         BufferedImage bi = outputScreen.toBufferedImage();
@@ -132,5 +144,9 @@ public class FXMLController implements Initializable {
         ObservableList<String> list = FXCollections.observableArrayList(Font.getFontNames());
         outputChoice.setItems(list);
         outputChoice.setValue(list.get(0));
+        
+        ObservableList<PetsciiColor> colorList = FXCollections.observableArrayList(PetsciiColor.values());
+        bgColorChoice.setItems(colorList);
+        bgColorChoice.setValue(PetsciiColor.BLACK);
     }
 }

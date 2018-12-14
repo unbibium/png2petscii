@@ -11,10 +11,11 @@
 <AnchorPane xmlns:fx="http://javafx.com/fxml/1" id="AnchorPane" prefHeight="450" prefWidth="700" fx:controller="us.happynet.png2petscii.FXMLController">
     <children>
         <ChoiceBox fx:id="outputChoice" prefHeight="30" prefWidth="150" onValueChange="#valueChange" AnchorPane.topAnchor="10" AnchorPane.leftAnchor="10"  /> 
+        <ChoiceBox fx:id="bgColorChoice" prefHeight="30" prefWidth="150" onValueChange="#valueChange" AnchorPane.topAnchor="50" AnchorPane.leftAnchor="10"  /> 
         <Button prefHeight="30" prefWidth="90" text="Open" onAction="#handleOpen" fx:id="open" AnchorPane.topAnchor="10" AnchorPane.leftAnchor="180"  />
         <Button prefHeight="30" prefWidth="90" text="Retry" onAction="#handleRetry" fx:id="retry" AnchorPane.topAnchor="10" AnchorPane.leftAnchor="280"  />
         <Button prefHeight="30" prefWidth="90" text="Save" onAction="#handleSave" fx:id="save" AnchorPane.topAnchor="10" AnchorPane.leftAnchor="380"  />
-        <Label text="Status" fx:id="label" AnchorPane.topAnchor="60" AnchorPane.leftAnchor="10" prefHeight="40" />  
+        <Label text="Status" fx:id="label" AnchorPane.topAnchor="90" AnchorPane.leftAnchor="10" prefHeight="40" />  
         <Label  text="Source" AnchorPane.leftAnchor="10" AnchorPane.bottomAnchor="250" />
         <ImageView fx:id="srcImage" AnchorPane.leftAnchor="10" AnchorPane.bottomAnchor="10" onImageChange="#imageLoaded" />
         <Label text="Destination" AnchorPane.rightAnchor="10" AnchorPane.bottomAnchor="250" />

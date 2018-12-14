@@ -8,7 +8,7 @@ import java.io.OutputStream;
  *
  * @author nickb
  */
-public class PetsciiGlyph extends ColorGlyph {
+public class PetsciiGlyph extends RenderedGlyph {
 
     public PetsciiGlyph(byte[] data, int screenCode, PetsciiColor foreground, PetsciiColor background) {
         super(data, screenCode, foreground, background);

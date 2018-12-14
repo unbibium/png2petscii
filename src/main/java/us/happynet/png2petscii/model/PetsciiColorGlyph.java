@@ -19,11 +19,11 @@ public class PetsciiColorGlyph extends PetsciiGlyph {
         super(data, screenCode, foreground, background);
     }
     
-    public PetsciiColorGlyph(PetsciiGlyph aglyph, PetsciiColor foreground, PetsciiColor background) {
+    public PetsciiColorGlyph(Glyph aglyph, PetsciiColor foreground, PetsciiColor background) {
         this(aglyph.toBytes(), aglyph.screenCode, foreground, background);
     }
     
-    public PetsciiColorGlyph(PetsciiGlyph aglyph, PetsciiColor foreground) {
+    public PetsciiColorGlyph(RenderedGlyph aglyph, PetsciiColor foreground) {
         this(aglyph.toBytes(), aglyph.screenCode, foreground, aglyph.getBackgroundColor());
     }
 

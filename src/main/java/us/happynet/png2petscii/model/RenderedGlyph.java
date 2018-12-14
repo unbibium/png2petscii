@@ -13,7 +13,7 @@ import javafx.scene.image.WritableImage;
  *
  * @author nickb
  */
-abstract public class ColorGlyph extends Glyph {
+abstract public class RenderedGlyph extends Glyph {
 
     protected final PetsciiColor background;
     protected final PetsciiColor foreground;
@@ -27,7 +27,7 @@ abstract public class ColorGlyph extends Glyph {
      * @param foreground
      * @param background
      */
-    public ColorGlyph(Glyph sourceGlyph, PetsciiColor foreground, PetsciiColor background) {
+    public RenderedGlyph(Glyph sourceGlyph, PetsciiColor foreground, PetsciiColor background) {
         this(sourceGlyph.toBytes(), sourceGlyph.getScreenCode(), foreground, background);
     }
     
@@ -38,7 +38,7 @@ abstract public class ColorGlyph extends Glyph {
      * @param foreground 
      * @param background 
      */
-    public ColorGlyph(byte[] data, int screenCode, PetsciiColor foreground, PetsciiColor background) {
+    public RenderedGlyph(byte[] data, int screenCode, PetsciiColor foreground, PetsciiColor background) {
         super(data,screenCode);
         this.background = background;
         this.foreground = foreground;

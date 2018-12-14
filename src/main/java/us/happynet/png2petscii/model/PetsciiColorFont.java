@@ -18,7 +18,7 @@ public class PetsciiColorFont extends PetsciiFont {
 
     private final PetsciiColor background;
 
-    private final List<PetsciiGlyph> allColorGlyphs = new ArrayList<>();
+    private final List<RenderedGlyph> allColorGlyphs = new ArrayList<>();
 
     public PetsciiColorFont(PetsciiFont srcFont, PetsciiColor background) {
         super(srcFont);
@@ -27,7 +27,7 @@ public class PetsciiColorFont extends PetsciiFont {
             if (c == background) {
                 continue;
             }
-            for(PetsciiGlyph g : glyphs) {
+            for(RenderedGlyph g : glyphs) {
                 if(g.getScreenCode()==96) {
                     continue;
                 }
@@ -45,7 +45,7 @@ public class PetsciiColorFont extends PetsciiFont {
     }
 
     @Override
-    public Iterable<PetsciiGlyph> getAvailableGlyphs() {
+    public Iterable<RenderedGlyph> getAvailableGlyphs() {
         return allColorGlyphs;
     }
 

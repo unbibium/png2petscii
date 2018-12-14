@@ -161,7 +161,7 @@ abstract public class Screen<F extends Font> {
      * AND colors
      * @return all glyphs that can be typed on this screen
      */
-    private Iterable<Glyph> getAvailableGlyphs() {
+    private Iterable<RenderedGlyph> getAvailableGlyphs() {
         return font.getAvailableGlyphs();
     }
     

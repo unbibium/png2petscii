@@ -42,7 +42,7 @@ public class FXMLController implements Initializable {
 
     // program state
     private File selectedFile;
-    private Screen<? extends Font<? extends Glyph>> outputScreen;
+    private Screen<? extends Font> outputScreen;
 
     @FXML
     private void handleOpen(ActionEvent event) {
@@ -105,7 +105,7 @@ public class FXMLController implements Initializable {
     }
 
     private void performConversion() {
-        Font<? extends Glyph> font;
+        Font font;
         try {
             font = Font.get(outputChoice.getValue());
         } catch (IOException ex) {

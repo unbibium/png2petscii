@@ -11,8 +11,8 @@ import java.util.List;
  *
  * @author nickb
  */
-public class AtasciiFont extends Font<AtasciiGlyph> {
-    protected final List<AtasciiGlyph> glyphs = new ArrayList<>(256);
+public class AtasciiFont extends Font {
+    protected final List<RenderedGlyph> glyphs = new ArrayList<>(256);
     
     /**
      * @param binFile a 1024-byte font bitmap
@@ -45,12 +45,12 @@ public class AtasciiFont extends Font<AtasciiGlyph> {
     }
     
     @Override
-    public Iterable<AtasciiGlyph> getAvailableGlyphs() {
+    public Iterable<RenderedGlyph> getAvailableGlyphs() {
         return glyphs;
     }
 
     @Override
-    public Screen<? extends Font<AtasciiGlyph>> newScreen() {
+    public Screen<? extends Font> newScreen() {
         return new AtasciiScreen(this);
     }
 

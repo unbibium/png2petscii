@@ -15,9 +15,9 @@ import static us.happynet.png2petscii.model.Font.read1K;
  * 
  * @author nickb
  */
-public class PetsciiFont extends Font<PetsciiGlyph> {
+public class PetsciiFont extends Font {
 
-    protected final List<PetsciiGlyph> glyphs;
+    protected final List<RenderedGlyph> glyphs;
     private final BufferedImage[] images = new BufferedImage[256];
 
     /**
@@ -61,18 +61,18 @@ public class PetsciiFont extends Font<PetsciiGlyph> {
      * @return 8x8 image of the requested glyph
      */
     public BufferedImage getImage(int i) {
-        PetsciiGlyph g = getGlyph(i);
+        RenderedGlyph g = glyphs.get(i);
         BufferedImage bi = new BufferedImage(8,8,BufferedImage.TYPE_INT_ARGB);
         bi.setRGB(0, 0, 8, 8, g.getRGBArray(), 0, 8);
         return bi;
     }
     
-    public PetsciiGlyph getGlyph(int i) {
+    public Glyph getGlyph(int i) {
         return glyphs.get(i);
     }
 
     @Override
-    public Iterable<PetsciiGlyph> getAvailableGlyphs() {
+    public Iterable<RenderedGlyph> getAvailableGlyphs() {
         return glyphs;
     }
 

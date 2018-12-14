@@ -44,7 +44,7 @@ public class PetsciiGlyphTest {
     
     @Test
     public void canInitializeWithFont() throws IOException {
-        PetsciiGlyph glyph = LOWERCASE_FONT.getGlyph(0);
+        Glyph glyph = LOWERCASE_FONT.getGlyph(0);
         Assert.assertArrayEquals(AT_SIGN_BYTES, glyph.toBytes());
     }
     

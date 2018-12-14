@@ -7,7 +7,7 @@ import java.io.OutputStream;
  *
  * @author nickb
  */
-public class AtasciiGlyph extends ColorGlyph {
+public class AtasciiGlyph extends RenderedGlyph {
 
     AtasciiGlyph(byte[] glyphBitmap, int i) {
         super(glyphBitmap, i, PetsciiColor.LIGHT_BLUE, PetsciiColor.BLUE);

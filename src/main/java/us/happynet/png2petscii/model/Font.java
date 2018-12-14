@@ -17,11 +17,10 @@ import javafx.scene.image.Image;
  * generic Font class
  * 
  * @author nickb
- * @param <G> Glyph class
  */
-abstract public class Font<G extends Glyph> {
+abstract public class Font {
 
-    private static final Map<String,Font<? extends Glyph>> LOADED_FONTS = new HashMap<>();
+    private static final Map<String,Font> LOADED_FONTS = new HashMap<>();
     private static final List<String> FONT_NAMES = Arrays.asList(
             "lowercase color","uppercase color",
             "lowercase mono","uppercase mono",
@@ -33,7 +32,7 @@ abstract public class Font<G extends Glyph> {
      * @return
      * @throws IOException 
      */
-    public static Font<? extends Glyph> get(String s) throws IOException {
+    public static Font get(String s) throws IOException {
         if(LOADED_FONTS.containsKey(s)) {
             return LOADED_FONTS.get(s);
         }
@@ -80,10 +79,10 @@ abstract public class Font<G extends Glyph> {
 
 
     
-    public G findClosest(BufferedImage tile) {
-        G result = null;
+    public RenderedGlyph findClosest(BufferedImage tile) {
+        RenderedGlyph result = null;
         double score = Double.POSITIVE_INFINITY;
-        for(G glyph : getAvailableGlyphs()) {
+        for(RenderedGlyph glyph : getAvailableGlyphs()) {
             double newscore = glyph.diff(tile);
             if (newscore < score) {
                 score = newscore;
@@ -102,21 +101,21 @@ abstract public class Font<G extends Glyph> {
      * of each glyph.
      * @return all glyphs that are allowed to be used in output files
      */
-    abstract public Iterable<G> getAvailableGlyphs();
+    abstract public Iterable<RenderedGlyph> getAvailableGlyphs();
 
-    public Screen<? extends Font<G>> convert(Image image) {
-        Screen<? extends Font<G>> result = newScreen();
+    public Screen<? extends Font> convert(Image image) {
+        Screen<? extends Font> result = newScreen();
         result.convert(image);
         return result;
     }
     
-    public Screen<? extends Font<G>> convert(BufferedImage image) {
-        Screen<? extends Font<G>> result = newScreen();
+    public Screen<? extends Font> convert(BufferedImage image) {
+        Screen<? extends Font> result = newScreen();
         result.convert(image);
         return result;
     }
 
-    abstract public Screen<? extends Font<G>> newScreen();
+    abstract public Screen<? extends Font> newScreen();
 
     abstract public byte[] getNewline();
     

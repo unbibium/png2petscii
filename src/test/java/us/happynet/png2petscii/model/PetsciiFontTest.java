@@ -65,7 +65,7 @@ public class PetsciiFontTest {
         Arrays.fill(blankSpace, 0);
         BufferedImage image = new BufferedImage(8, 8, BufferedImage.TYPE_INT_ARGB);
         image.setRGB(0, 0, 8, 8, blankSpace, 0, 8);
-        PetsciiGlyph glyph = FONT.findClosest(image);
+        Glyph glyph = FONT.findClosest(image);
         assertEquals("screen code is space", 32, glyph.getScreenCode());
     }
     
@@ -84,7 +84,7 @@ public class PetsciiFontTest {
         };
         BufferedImage image = new BufferedImage(8, 8, BufferedImage.TYPE_INT_ARGB);
         image.setRGB(0, 0, 8, 8, atSign, 0, 8);
-        PetsciiGlyph glyph = FONT.findClosest(image);
+        Glyph glyph = FONT.findClosest(image);
         assertEquals("screen code is at-sign", 0, glyph.getScreenCode());
     }
 

@@ -20,20 +20,42 @@ public class PetsciiColorFont extends PetsciiFont {
 
     private final List<RenderedGlyph> allColorGlyphs = new ArrayList<>();
 
-    public PetsciiColorFont(PetsciiFont srcFont, PetsciiColor background) {
+    public PetsciiColorFont(PetsciiFont srcFont, PetsciiColor[] colors, PetsciiColor background) {
         super(srcFont);
         this.background = background;
-        for (PetsciiColor c : PetsciiColor.values()) {
-            if (c == background) {
+        for (PetsciiColor foreground : colors) {
+            if (foreground == background) {
                 continue;
             }
             for(RenderedGlyph g : glyphs) {
-                if(g.getScreenCode()==96) {
+                // skip shift-space
+                if(g.getScreenCode()==96 || g.getScreenCode()==224) {
                     continue;
                 }
-                allColorGlyphs.add( new PetsciiColorGlyph(g, c, background));
+                allColorGlyphs.add( new PetsciiColorGlyph(g, foreground, background));
             }
         }
+    }
+    
+    /**
+     * Generates a font with only one foreground color
+     * 
+     * @param srcFont
+     * @param foreground the lone foreground color to render the glyphs
+     * @param background the background color of the screen being written to
+     */
+    public PetsciiColorFont(PetsciiFont srcFont, PetsciiColor foreground, PetsciiColor background) {
+        this(srcFont, asArray(foreground), background);
+    }
+    
+    private static PetsciiColor[] asArray(PetsciiColor color) {
+        PetsciiColor[] array = new PetsciiColor[1];
+        array[0]=color;
+        return array;
+    }
+    
+    public PetsciiColorFont(PetsciiFont srcFont, PetsciiColor background) {
+        this(srcFont,PetsciiColor.values(),background);
     }
     
     public PetsciiColorFont(PetsciiFont srcFont) {

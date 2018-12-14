@@ -27,15 +27,13 @@ public class PetsciiColorGlyph extends PetsciiGlyph {
         this(aglyph.toBytes(), aglyph.screenCode, foreground, aglyph.getBackgroundColor());
     }
 
-    private static final PixelDiffStrategy COLOR_STRATEGY = new RGBDiffStrategy();
-    
     /**
      * @param imgB
      * @return difference of luma values between this glyph and imgB.
      */
     @Override
     public double diff(BufferedImage imgB) {
-        return diff(imgB, COLOR_STRATEGY);
+        return diff(imgB, PixelDiffStrategy.RGB_DIFF);
     }
 
     /**

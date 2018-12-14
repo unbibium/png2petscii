@@ -76,8 +76,6 @@ abstract public class RenderedGlyph extends Glyph {
     public int getRGB(int index) {
         return (bitmap(index) ? foreground : background).getRGB();
     }
-
-    static final PixelDiffStrategy STRATEGY = new LumaDiffStrategy();
     
     /**
      * @param imgB
@@ -85,7 +83,7 @@ abstract public class RenderedGlyph extends Glyph {
      */
     @Override
     public double diff(BufferedImage imgB) {
-        return diff(imgB, STRATEGY);
+        return diff(imgB, PixelDiffStrategy.LUMA_DIFF);
     }
     
     

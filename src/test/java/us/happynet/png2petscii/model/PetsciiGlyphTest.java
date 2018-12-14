@@ -89,9 +89,22 @@ public class PetsciiGlyphTest {
         ByteArrayOutputStream os = new ByteArrayOutputStream();
         atSignGlyph.writeData(os);
         byte[] ba = os.toByteArray();
-        assertEquals("byte array length", 2, ba.length);
-        assertEquals("first character is RVS_OFF", ba[0], -110);
-        assertEquals("second character is ASCII @", ba[1], 64);
+        assertEquals("byte array length", 3, ba.length);
+        assertEquals("first character is default WHITE", 5, ba[0]);
+        assertEquals("second character is RVS_OFF", -110, ba[1] );
+        assertEquals("third character is ASCII @", 64, ba[2]);
+    }
+    
+    @Test
+    public void writesPetsciiLettersInColor() throws IOException {
+        PetsciiGlyph atSignGlyph = new PetsciiGlyph(AT_SIGN_BYTES, 0, PetsciiColor.CYAN, PetsciiColor.RED);
+        ByteArrayOutputStream os = new ByteArrayOutputStream();
+        atSignGlyph.writeData(os);
+        byte[] ba = os.toByteArray();
+        assertEquals("byte array length", 3, ba.length);
+        assertEquals("first character is CYAN", -97, ba[0]);
+        assertEquals("second character is RVS_OFF", -110, ba[1] );
+        assertEquals("third character is ASCII @", 64, ba[2]);
     }
     
 }

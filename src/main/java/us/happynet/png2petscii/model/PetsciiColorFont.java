@@ -32,7 +32,7 @@ public class PetsciiColorFont extends PetsciiFont {
                 if(g.getScreenCode()==96 || g.getScreenCode()==224) {
                     continue;
                 }
-                allColorGlyphs.add( new PetsciiColorGlyph(g, foreground, background));
+                allColorGlyphs.add( new PetsciiGlyph(g, foreground, background));
             }
         }
     }

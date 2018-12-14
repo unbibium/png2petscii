@@ -51,6 +51,10 @@ public class FXMLController implements Initializable {
         fileChooser.setTitle("Open Source File");
         fileChooser.getExtensionFilters().add(new ExtensionFilter("Image Files", "*.jpg", "*.jpeg", "*.png"));
         selectedFile = fileChooser.showOpenDialog(stage);
+        if(selectedFile == null) {
+            label.setText("Open aborted");
+            return;
+        }
         try (InputStream fis = new BufferedInputStream(new FileInputStream(selectedFile))) {
             Image src = new Image(fis, 312, 200, true, true);
             srcImage.setImage(src);
@@ -74,6 +78,10 @@ public class FXMLController implements Initializable {
         fileChooser.setTitle("Save Output File");
         OutputFormats.populate(fileChooser, outputScreen.getClass());
         File outputFile = fileChooser.showSaveDialog(stage);
+        if(outputFile == null) {
+            label.setText("Save aborted");
+            return;
+        }
         ExtensionFilter format = fileChooser.getSelectedExtensionFilter();
         try {
             OutputFormats.write(format, outputScreen, outputFile);
